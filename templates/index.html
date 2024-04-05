@@ -109,7 +109,7 @@
               </h3>
               <div class="predict-div" style="background: url('{% static "assets/images/mink-mingle-HRyjETL87Gg-unsplash.jpg" %}')">
                 <div>
-                  <form method="POST" action="{% url 'home' %}" class="form-div">
+                  <form method="POST" action="{% url 'home' %}" class="form-div" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="form-group">
                       <label for="exampleFormControlInput1" class="form-label"
@@ -120,15 +120,26 @@
                         class="form-control"
                         name="youtube_url"
                         placeholder="Youtube URL"
-                        required
                       />
                     </div>
-                    <button type="submit">Predict Genre</button>
+                    {% comment %} for audio upload {% endcomment %}
+                     <p>OR</p>
+                    <div class="form-group">
+                      <label for="exampleFormControlInput1" class="form-label"
+                        >Upload Audio File</label
+                      >
+                      <input
+                        type="file"
+                        class="form-control"
+                        name="audio_file"
+                      />
+                    </div>
+                    <br>
+                    <button type="submit" class="btn btn-predict">Predict Genre</button>
                   </form>
                   {% if result|length %}
                   <div>
                     <h3 class="result-h3">Predicted Genre: </h3> 
-                    <br/>
                     <h3 class="result-h3">{{result}}</h3>
                   </div>
                   {% endif %}

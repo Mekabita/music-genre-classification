@@ -145,3 +145,9 @@ button.close{position: absolute;right: 0;background: #FFF;width: 25px;height: 25
     padding-left: 70px;
     width: 90%;
 }
+
+.btn-predict{
+    color: #ffffff;
+    background-color: #f2ab00;
+    border-color: #f2ab00;
+}

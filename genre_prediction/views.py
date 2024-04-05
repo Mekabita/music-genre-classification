@@ -8,6 +8,7 @@ from pydub import AudioSegment
 from tensorflow.keras.models import load_model
 import numpy as np
 from collections import Counter
+from django.core.files.storage import default_storage
 # Create your views here.
 
 # 
@@ -25,10 +26,19 @@ genre_dict = {
 }
 
 def home(request):
-    print(request)
     if request.method == 'POST':
-        youtube_url = request.POST['youtube_url']
-        result = process_audio(youtube_url)
+        youtube_url = request.POST.get('youtube_url', None)
+        if not youtube_url:
+            audio_file = request.FILES['audio_file']
+            
+            if not audio_file:
+                return render(request, 'index.html', {'genre_dict' : genre_dict})
+            # process the audio file
+            # result = process_audio(audio_file)
+            result = process_audio(audio_file, type = 'audio')
+        else: 
+            result = process_audio(youtube_url, type = 'youtube')
+            # result = process_youtube_url(youtube_url)
         return render(request, 'index.html', {'genre_dict': genre_dict, 'result' : result} )
     else:
         return render(request, 'index.html', {'genre_dict' : genre_dict})
@@ -36,21 +46,32 @@ def home(request):
 
 
 # fetch the audio from youtube video and convert it to wav format
-def process_audio(youtube_url):
-    yt = YouTube(youtube_url)
-    video = yt.streams.filter(only_audio=True).first()
-    destino = "media"
-    out_file = video.download(output_path=destino)
-    base, ext = os.path.splitext(out_file)
-    
-    audio = AudioSegment.from_file(out_file)
+def process_audio(file_link, type = 'youtube'):
+    if type == 'youtube':
+        yt = YouTube(file_link)
+        video = yt.streams.filter(only_audio=True).first()
+        destino = "media"
+        out_file = video.download(output_path=destino)
+        audio = AudioSegment.from_file(out_file)
+        base, ext = os.path.splitext(out_file)
+    else:
+        default_storage.save(file_link.name, file_link)
+        out_file = "media/"+file_link.name
+        audio = AudioSegment.from_file(out_file)
+        base, ext = os.path.splitext(out_file)
+        
     new_file = base + '.wav'
     audio.export(new_file, format='wav')
 
     mfccs = generate_mfccs(new_file)
     # return mfccs
     result = genre_predictions(mfccs)
+
+    if type == 'youtube':
+        default_storage.delete(os.path.basename(base)+".wav")
+    default_storage.delete(os.path.basename(out_file))
     return result
+
 
 # Do the same preprocessing steps as during the model training
 def generate_mfccs(audio_file):

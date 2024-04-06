@@ -68,7 +68,7 @@ kiwisolver==1.4.5
 lazy_loader==0.3
 libclang==16.0.6
 librosa==0.10.1
-llvmlite==0.42.0
+llvmlite==0.41.0
 Markdown==3.5.1
 MarkupSafe==2.1.2
 matplotlib==3.8.0

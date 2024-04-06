@@ -134,3 +134,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage' 
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+#py manage.py collectstatic to collect static files.

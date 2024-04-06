@@ -68,10 +68,10 @@ kiwisolver==1.4.5
 lazy_loader==0.3
 libclang==16.0.6
 librosa==0.10.1
-llvmlite==0.41.0
+llvmlite<=0.41.0
 Markdown==3.5.1
 MarkupSafe==2.1.2
-matplotlib==3.8.0
+matplotlib<=3.7.0
 matplotlib-inline==0.1.6
 mistune==2.0.5
 ml-dtypes==0.2.0
@@ -163,6 +163,7 @@ webcolors==1.13
 webencodings==0.5.1
 websocket-client==1.5.1
 Werkzeug==3.0.1
+whitenoise==6.6.0
 widgetsnbextension==4.0.5
 wrapt==1.14.1
 youtube-dl @ git+https://github.com/ytdl-org/youtube-dl.git@21792b88b791b16e3ab0a0fb2e26e5bb8a4e2ff3

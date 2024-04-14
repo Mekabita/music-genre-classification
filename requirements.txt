@@ -168,3 +168,4 @@ widgetsnbextension==4.0.5
 wrapt==1.14.1
 youtube-dl @ git+https://github.com/ytdl-org/youtube-dl.git@21792b88b791b16e3ab0a0fb2e26e5bb8a4e2ff3
 zipp==3.15.0
+

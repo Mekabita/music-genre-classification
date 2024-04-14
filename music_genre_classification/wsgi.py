@@ -11,6 +11,8 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "music_genre_classification.settings")
+setting_module = 'music_genre_classification.deployment' if 'WEBSITE_HOSTNAME' in os.environ else 'music_genre_classification.settings'
+
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", setting_module)
 
 application = get_wsgi_application()

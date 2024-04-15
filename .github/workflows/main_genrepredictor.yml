@@ -46,13 +46,13 @@ jobs:
             release.zip
             !venv/
 
-  install_ffmpeg:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Install FFmpeg
-        run: |
-          apt update
-          apt install ffmpeg
+  # install_ffmpeg:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Install FFmpeg
+  #       run: |
+  #         apt update
+  #         apt install ffmpeg
 
   deploy:
     runs-on: ubuntu-latest

@@ -28,16 +28,13 @@ genre_dict = {
 def home(request):
     if request.method == 'POST':
         youtube_url = request.POST.get('youtube_url', None)
-        audio = request.POST.get('audio_file', None)
-        if not youtube_url and not audio:
+        if not youtube_url and not ('audio_file' in request.FILES):
             return render(request, 'index.html', {'genre_dict' : genre_dict})
         if not youtube_url:
             audio_file = request.FILES['audio_file']
-            
-            if not request.POST.get('audio_file', None):
+            if not ('audio_file' in request.FILES):
                 return render(request, 'index.html', {'genre_dict' : genre_dict})
             # process the audio file
-            # result = process_audio(audio_file)
             result = process_audio(audio_file, type = 'audio')
         else: 
             result = process_audio(youtube_url, type = 'youtube')

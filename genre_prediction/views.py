@@ -1,11 +1,11 @@
 from django.shortcuts import render
 import json
-import youtube_dl
 import librosa
 import os
-from pytube import YouTube
-from pydub import AudioSegment  
+from pytubefix import YouTube
+from pydub import AudioSegment
 from tensorflow.keras.models import load_model
+from tensorflow.keras.layers import LSTM
 import numpy as np
 from collections import Counter
 from django.core.files.storage import default_storage
@@ -105,11 +105,17 @@ def generate_mfccs(audio_file):
     return X
 
 
+# Keras 3 no longer accepts 'time_major', which the old .h5 RNN model was saved with
+class CompatLSTM(LSTM):
+    def __init__(self, *args, time_major=False, **kwargs):
+        super().__init__(*args, **kwargs)
+
+
 def genre_predictions(X):
     model1 = load_model('models/cnn_model-2.h5')
     model2 = load_model('models/tuned_cnn_model.h5')
-    model3 = load_model('models/rnn_model.h5')
-    prediction = model1.predict(X)
+    model3 = load_model('models/rnn_model.h5', custom_objects={'LSTM': CompatLSTM})
+    prediction = model2.predict(X)
 
     genre_list = list()
     # As the mfcc of audio files are generated for each 3 second slice, 

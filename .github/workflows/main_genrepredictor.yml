@@ -18,9 +18,9 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Set up Python version
-        uses: actions/setup-python@v1
+        uses: actions/setup-python@v5
         with:
-          python-version: "3.9"
+          python-version: "3.11"
 
       - name: Create and start virtual environment
         run: |
@@ -39,7 +39,7 @@ jobs:
         run: zip release.zip ./* -r
 
       - name: Upload artifact for deployment jobs
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: python-app
           path: |
@@ -65,7 +65,7 @@ jobs:
 
     steps:
       - name: Download artifact from build job
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: python-app
 
@@ -73,14 +73,14 @@ jobs:
         run: unzip release.zip
 
       - name: Login to Azure
-        uses: azure/login@v1
+        uses: azure/login@v2
         with:
           client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_5150F8AD260F4E7BB8707F311FC723E4 }}
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_12BD9169C29D40AC83043A848A515B16 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_025E747F2C9A4A3081EB514D32DF5FD0 }}
 
       - name: "Deploy to Azure Web App"
-        uses: azure/webapps-deploy@v2
+        uses: azure/webapps-deploy@v3
         id: deploy-to-webapp
         with:
           app-name: "genrepredictor"
